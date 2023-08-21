@@ -1,30 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-
-import { ExerciceService } from 'src/app/services/exercice.service';
-
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { Exercise } from 'src/app/models/exercise.model';
+import { FetchExercises } from 'src/app/states/exercise.actions';
+import { ExerciseState } from 'src/app/states/exercise.state';
 
 @Component({
   selector: 'app-biceps',
   templateUrl: './biceps.component.html',
-  styleUrls: ['./biceps.component.scss']
+  styleUrls: ['./biceps.component.scss'],
 })
 export class BicepsComponent implements OnInit {
-  data: any;
+  @Select(ExerciseState.getExercises) biceps$: Observable<Exercise[]> | undefined;
 
-  constructor(private exerciceService: ExerciceService) {}
+  constructor(private store: Store) {}
 
-  ngOnInit(): void{
-    this.fetchData();
-    console.log(this.fetchData())
-  }
+  ngOnInit() {
+    const apiUrl = 'https://api.api-ninjas.com/v1/exercises?muscle=biceps'; // Remplacez par votre URL d'API
 
-  fetchData(): void {
-    this.exerciceService.fetchBicepsExercises().subscribe 
-    ({next:(data)=>{
-      this.data=data;
-      console.log('data', data)
+    this.store.dispatch(new FetchExercises(apiUrl));
 
-   } })
-
+    this.biceps$?.subscribe({
+      next: (data: Exercise[]) => {
+        console.log('Data:', data);
+      },
+    });
   }
 }

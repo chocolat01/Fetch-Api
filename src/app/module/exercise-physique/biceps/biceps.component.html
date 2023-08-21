@@ -4,26 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+    </style>
 </head>
 <body>
-    <div>
+    <nav>
+        <ul>
+            <li><a href="/">Accueil</a></li>
+
+            <a routerLink="/loading">Go to Loading Page</a>
+            
+        </ul>
+    </nav>
+    <div *ngIf="(biceps$ | async) as biceps">
+        <h2>Exercices de biceps</h2>
         <table>
-            <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Muscle</th>
-            </tr>
-            <tr *ngFor="let item of data">
-                <td>{{item.name}}</td>
-                <td>{{item.type}}</td>
-                <td>{{item.muscle}}</td>
-                
-    
-    
-    
-            </tr>
+        <thead>
+        <tr>
+        <th>Nom</th>
+        <th>Muscle</th>
+        <th>Difficulty</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let exercise of biceps">
+        <td>{{ exercise.name }}</td>
+        <td>{{ exercise.muscle }}</td>
+        <td>{{exercise.difficulty}}</td>
+        </tr>
+        </tbody>
         </table>
-    </div>
-    
+        </div>
+        
 </body>
 </html>
